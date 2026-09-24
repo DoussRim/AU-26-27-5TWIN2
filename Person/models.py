@@ -7,8 +7,11 @@ def VerifCin(value):
         raise ValidationError("cin must have 8 characters!")
 def verifEmail(value):
     if str(value).endswith('@esprit.tn'):
-        raise ValidationError(f"you email{value} must end with @esprit.tn")
+        raise ValidationError(f"your email {value} must end with @esprit.tn")
 class Person(AbstractUser):
     cin=models.CharField(primary_key=True,max_length=8,validators=[VerifCin])
     email=models.EmailField("Courrier",max_length=50,unique=True,validators=[verifEmail])
-    username=models.CharField(max_length=50)
+    username=models.CharField(max_length=50,unique=True)
+    class Meta:
+        #verbose_name="Personne"
+        verbose_name_plural="Personne"

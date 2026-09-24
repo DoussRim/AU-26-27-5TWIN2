@@ -8,7 +8,7 @@ class Event(models.Model):
         ('C',"Cinema"),
         ('S','Sport'),
     )
-    title=models.CharField("Titel",max_length=50)
+    title=models.CharField("Title",max_length=50)
     description=models.TextField(max_length=50)
     image=models.ImageField(upload_to="images/",null=True,blank=True)
     category=models.CharField(choices=category_list)
@@ -24,10 +24,13 @@ class Event(models.Model):
     )
     participant=models.ManyToManyField(
         Person,
-        through="Participants"
+        through="Participants",
+        related_name="participant"
     )
+    def __str__(self):
+        return f'Le titre est {self.title} la catégorie est {self.category}'
     class Meta:
-        contraints=[
+        constraints=[
             models.CheckConstraint(check=models.Q(
                 evt_date__gt=datetime.now()
             ),
