@@ -1,4 +1,4 @@
-from django.contrib import admin
+from django.contrib import admin,messages
 from Event.models import *
 # Register your models here.
 class FilterDate(admin.SimpleListFilter):
@@ -20,7 +20,7 @@ class FilterDate(admin.SimpleListFilter):
 class ParticipantAdmin(admin.TabularInline):
     model=Participants
     extra=1
-    readonly_fields=('participation_date')
+    readonly_fields=('participation_date',)
 @admin.register(Event)
 class EventAdmin(admin.ModelAdmin):
     list_display=('title','category','description','evt_date',
@@ -53,5 +53,21 @@ class EventAdmin(admin.ModelAdmin):
     search_fields=['title','category']
     list_filter=['title','organizer',FilterDate]
     inlines=[ParticipantAdmin]
-
+    @admin.display(description="State True")
+    def accept_state(self,request,queryset):
+            req=queryset.update(state=True)
+            if req==1:
+                msg="1 evt was "
+            else:
+                msg=f"{req} events were"
+            messages.success(request,f'{msg} successfully updated')
+    @admin.display(description="State False")
+    def refuse_state(self,request,queryset):
+        req=queryset.update(state=False)
+        if req==1:
+            msg="1 evt was "
+        else:
+            msg=f"{req} events were"
+        messages.success(request,f'{msg} successfully updated')
+    actions=[accept_state,refuse_state]
 #admin.site.register(Event,EventAdmin)
