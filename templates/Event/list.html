@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block body %}
+{% for e in evt %}
+<ul>
+    <li><b>Title: </b>{{e.title}}</li>
+    <li><b>Category: </b>{{e.category}}</li>
+    <li><b>Description: </b>{{e.description}}</li>
+    <li><b>Event Date: </b>{{e.evipant}}</li>
+    <li><b>State: </b>
+        {% if e.state %}Accepted
+        {% else %}Pending
+        {% endif %}</li>
+        <li><b>Organizer <i> {{e.organizer}}</i>: </b>{{e.organizer.email}}</li>
+        <li><b>List Of Participant: </b>
+        {% for p in e.participant.all  %}
+            {{p.username}}{% if not forloop.last %}-{% endif %}
+           
+            {% endfor %}
+        </li>
+        <li><b>Event Image: </b><img src="{{e.image.url}}"></li>
+</ul></li>
+    <li><b>Nb Participant: </b>{{e.nb_particant}}
+{% endfor %}
+{% endblock body %}

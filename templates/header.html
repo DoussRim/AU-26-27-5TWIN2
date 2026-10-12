@@ -1,0 +1,16 @@
+<a href="{% url "list" %}">List Event</a>||<a href="{% url "list_Gen" %}">Generic List Event</a>|| <a href="">Add Event</a>
+<ul>
+{% if user.is_authenticated %}
+    <li> Hello, {{user.username}}</li>
+    <li>
+        <form method="POST" action="{% url "out" %}">
+            {% csrf_token %}
+            <input type="submit" value="Logout">
+        </form>
+    </li>
+    {%else%}
+    <a href="{% url "log" %}">Login</a>|
+    <a href="{% url "Register" %}">Register</a>
+{%endif%}
+</ul>
+<hr>
